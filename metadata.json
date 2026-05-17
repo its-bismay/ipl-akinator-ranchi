@@ -1,0 +1,6 @@
+{
+  "name": "IPL Genius",
+  "description": "AI-powered Akinator-style game to guess IPL players using probabilistic reasoning.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
