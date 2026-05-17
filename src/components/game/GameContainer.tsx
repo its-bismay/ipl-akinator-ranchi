@@ -19,12 +19,8 @@ export const GameContainer: React.FC = () => {
   const [remainingCount, setRemainingCount] = useState<number>(0);
   const [history, setHistory] = useState<Array<{ question: string, attribute: string, answer: UserAnswer }>>([]);
 
-<<<<<<< HEAD
-=======
   const { user, userData, login, loginError, refreshUserData } = useAuth();
   const [pendingStart, setPendingStart] = useState(false);
-   
->>>>>>> 8eec832c3d15f6ecae1ffaf1a1693858e8e520e0
   const players = {
     "Virat Kohli":
       "https://documents.iplt20.com/ipl/IPLHeadshot2025/2.png",
@@ -330,14 +326,6 @@ export const GameContainer: React.FC = () => {
       "https://documents.iplt20.com/ipl/IPLHeadshot2025/75.png"
   };
 
-<<<<<<< HEAD
-  function getPlayerImage(name: string
-  ) {
-    return players[name];
-  }
-
-  console.log(getPlayerImage("Virat Kohli"));
-=======
   function getPlayerImage(name: string) {
     return players[name];
   }
@@ -353,7 +341,6 @@ export const GameContainer: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, pendingStart]);
->>>>>>> 8eec832c3d15f6ecae1ffaf1a1693858e8e520e0
 
   const fetchNextStep = async (newHistory: Array<{ question: string, attribute: string, answer: UserAnswer }>) => {
     try {
@@ -384,24 +371,13 @@ export const GameContainer: React.FC = () => {
         setRemainingCount(data.remaining_players_count);
         setGameState('playing');
       } else if (data.type === 'guess') {
-<<<<<<< HEAD
-
         const playerName = data.guess;
         const imageUrl = getPlayerImage(playerName);
-
-=======
-        const playerName = data.guess;
-        const imageUrl = getPlayerImage(playerName);
->>>>>>> 8eec832c3d15f6ecae1ffaf1a1693858e8e520e0
         setLastGuess({
           name: playerName,
           confidence: data.confidence,
           reason: data.reason,
-<<<<<<< HEAD
-          imageUrl: imageUrl || "https://ui-avatars.com/api/?name=" + data.guess,
-=======
           imageUrl: imageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(playerName)}&background=random&color=fff&size=256`,
->>>>>>> 8eec832c3d15f6ecae1ffaf1a1693858e8e520e0
           franchises: [] // We could fetch this or just omit
         });
         setGameState('guessing');
@@ -484,12 +460,8 @@ export const GameContainer: React.FC = () => {
             exit={{ opacity: 0, scale: 1.1 }}
             className="flex-1 flex flex-col lg:flex-row gap-8 items-stretch"
           >
-<<<<<<< HEAD
-            <div className="bg-slate-900/60 border border-white/10 rounded-[32px] p-12 flex flex-col items-center justify-center text-center relative overflow-hidden w-full max-w-2xl min-h-[400px]">
-=======
             {/* Launch Card */}
             <div className="flex-1 bg-slate-900/60 border border-white/10 rounded-[32px] p-12 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[400px]">
->>>>>>> 8eec832c3d15f6ecae1ffaf1a1693858e8e520e0
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full"></div>
               <div className="mb-10 relative">
                 <div className="w-24 h-24 rounded-full border-2 border-amber-400/30 flex items-center justify-center p-2">
