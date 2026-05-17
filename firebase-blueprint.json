@@ -1,0 +1,45 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Represents a player of the game",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "gamesPlayed": { "type": "integer" },
+        "gamesWon": { "type": "integer" },
+        "accuracy": { "type": "number" },
+        "lastPlayed": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email"]
+    },
+    "Session": {
+      "title": "Session",
+      "description": "Represents a single game session",
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string" },
+        "userId": { "type": "string" },
+        "questions": { "type": "array", "items": { "type": "string" } },
+        "answers": { "type": "array", "items": { "type": "string" } },
+        "guess": { "type": "string" },
+        "actualPlayer": { "type": "string" },
+        "won": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["sessionId", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Collection of user profiles"
+    },
+    "/sessions/{sessionId}": {
+      "schema": "Session",
+      "description": "Collection of game sessions"
+    }
+  }
+}
