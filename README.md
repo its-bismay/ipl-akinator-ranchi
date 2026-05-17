@@ -9,7 +9,6 @@ This project is built using a modern React frontend (Vite) and a Node.js/Express
 ```text
 ipl-genius/
 ├── .env                        # Environment variables
-├── firebase-applet-config.json # Firebase Configuration
 ├── firestore.rules             # Firestore Database Security Rules
 ├── package.json                # Project Dependencies & Scripts
 ├── server.ts                   # Backend Express Server Entry Point

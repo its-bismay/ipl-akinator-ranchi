@@ -19,6 +19,318 @@ export const GameContainer: React.FC = () => {
   const [remainingCount, setRemainingCount] = useState<number>(0);
   const [history, setHistory] = useState<Array<{ question: string, attribute: string, answer: UserAnswer }>>([]);
 
+  const players = {
+    "Virat Kohli":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/2.png",
+
+    "MS Dhoni":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/57.png",
+
+    "Rohit Sharma":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/6.png",
+
+    "AB de Villiers":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/25.png",
+
+    "Chris Gayle":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/40.png",
+
+    "Jasprit Bumrah":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/9.png",
+
+    "Suryakumar Yadav":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/174.png",
+
+    "Hardik Pandya":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/54.png",
+
+    "KL Rahul":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1125.png",
+
+    "Jos Buttler":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/509.png",
+
+    "Yuzvendra Chahal":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/111.png",
+
+    "Ravindra Jadeja":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/46.png",
+
+    "Andre Russell":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/177.png",
+
+    "Sunil Narine":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/203.png",
+
+    "David Warner":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/170.png",
+
+    "Shubman Gill":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3761.png",
+
+    "Ruturaj Gaikwad":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/5443.png",
+
+    "Sanju Samson":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/258.png",
+
+    "Rishabh Pant":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/2972.png",
+
+    "Kieron Pollard":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/210.png",
+
+    "Faf du Plessis":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/24.png",
+
+    "Glenn Maxwell":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/282.png",
+
+    "Shikhar Dhawan":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/41.png",
+
+    "Dinesh Karthik":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/102.png",
+
+    "Trent Boult":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/969.png",
+
+    "Rashid Khan":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/2885.png",
+
+    "Mohammed Siraj":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3840.png",
+
+    "Kane Williamson":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/440.png",
+
+    "Quinton de Kock":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/834.png",
+
+    "Harbhajan Singh":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/18.png",
+
+    "Ajinkya Rahane":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/135.png",
+
+    "Ambati Rayudu":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/100.png",
+
+    "Bhuvneshwar Kumar":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/116.png",
+
+    "Robin Uthappa":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/127.png",
+
+    "Lasith Malinga":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/29.png",
+
+    "Aiden Markram":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1667.png",
+
+    "Mitchell Starc":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/157.png",
+
+    "Pat Cummins":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/488.png",
+
+    "Nitish Rana":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/2738.png",
+
+    "Deepak Chahar":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/140.png",
+
+    "Axar Patel":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1113.png",
+
+    "Kuldeep Yadav":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/261.png",
+
+    "Ishan Kishan":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/2975.png",
+
+    "Rahul Tripathi":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3838.png",
+
+    "Shane Watson":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/227.png",
+
+    "Devon Conway":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/601.png",
+
+    "Yashasvi Jaiswal":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/13538.png",
+
+    "Arshdeep Singh":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/12598.png",
+
+    "Marcus Stoinis":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/964.png",
+
+    "Kagiso Rabada":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1664.png",
+
+    "Varun Chakravarthy":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/5432.png",
+
+    "Heinrich Klaasen":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/202.png",
+
+    "Tilak Varma":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/20593.png",
+
+    "Rinku Singh":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3830.png",
+
+    "Jofra Archer":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/181.png",
+
+    "Washington Sundar":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/2973.png",
+
+    "Prithvi Shaw":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3764.png",
+
+    "Mohit Sharma":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/107.png",
+
+    "Avesh Khan":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1561.png",
+
+    "Nicholas Pooran":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1703.png",
+
+    "Ravichandran Ashwin":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/8.png",
+
+    "Cameron Green":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1705.png",
+
+    "Yusuf Pathan":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/190.png",
+
+    "Manish Pandey":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/123.png",
+
+    "Navdeep Saini":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3825.png",
+
+    "Sam Curran":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/2930.png",
+
+    "Sai Sudharsan":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/20586.png",
+
+    "Rahul Chahar":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3826.png",
+
+    "Shimron Hetmyer":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1700.png",
+
+    "Mukesh Kumar":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/20584.png",
+
+    "Riyan Parag":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/4445.png",
+
+    "Maheesh Theekshana":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/20587.png",
+
+    "Abhishek Sharma":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3760.png",
+
+    "Tim David":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/4524.png",
+
+    "Harshal Patel":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/114.png",
+
+    "Venkatesh Iyer":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/8540.png",
+
+    "Travis Head":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/37.png",
+
+    "Shardul Thakur":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1745.png",
+
+    "Rahmanullah Gurbaz":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/15994.png",
+
+    "T Natarajan":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3831.png",
+
+    "Amit Mishra":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/32.png",
+
+    "Phil Salt":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1220.png",
+
+    "Shreyas Iyer":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/1563.png",
+
+    "Noor Ahmad":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/20591.png",
+
+    "Mohsin Khan":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/20588.png",
+
+    "Rachin Ravindra":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/7242.png",
+
+    "Devdutt Padikkal":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/5430.png",
+
+    "Krunal Pandya":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3183.png",
+
+    "Liam Livingstone":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/3644.png",
+
+    "Sandeep Sharma":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/137.png",
+
+    "Mohammed Shami":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/94.png",
+
+    "Virender Sehwag":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/19.png",
+
+    "Gautam Gambhir":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/84.png",
+
+    "Dwayne Bravo":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/25.png",
+
+    "Robin Minz":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/20595.png",
+
+    "Brett Lee":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/13.png",
+
+    "Pragyan Ojha":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/58.png",
+
+    "Tilak Naidu":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/20596.png",
+
+    "Umesh Yadav":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/59.png",
+
+    "Adam Zampa":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/958.png",
+
+    "Murali Vijay":
+      "https://documents.iplt20.com/ipl/IPLHeadshot2025/75.png"
+  };
+
+  function getPlayerImage(name: string
+  ) {
+    return players[name];
+  }
+
+  console.log(getPlayerImage("Virat Kohli"));
+
   const fetchNextStep = async (newHistory: Array<{ question: string, attribute: string, answer: UserAnswer }>) => {
     try {
       setIsThinking(true);
@@ -26,11 +338,11 @@ export const GameContainer: React.FC = () => {
       const response = await fetch('/api/game/next-step', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           history: newHistory,
         }),
       });
-      
+
       if (response.status === 429) {
         setError("AI is resting (Quota reached). Please wait a few seconds and try answering again.");
         return;
@@ -48,11 +360,15 @@ export const GameContainer: React.FC = () => {
         setRemainingCount(data.remaining_players_count);
         setGameState('playing');
       } else if (data.type === 'guess') {
+
+        const playerName = data.guess;
+        const imageUrl = getPlayerImage(playerName);
+
         setLastGuess({
           name: data.guess,
           confidence: data.confidence,
           reason: data.reason,
-          imageUrl: `https://ui-avatars.com/api/?name=${encodeURIComponent(data.guess)}&background=random&color=fff&size=256`,
+          imageUrl: imageUrl || "https://ui-avatars.com/api/?name=" + data.guess,
           franchises: [] // We could fetch this or just omit
         });
         setGameState('guessing');
@@ -115,8 +431,8 @@ export const GameContainer: React.FC = () => {
             className="flex-1 flex flex-col items-center justify-center"
           >
             <div className="bg-slate-900/60 border border-white/10 rounded-[32px] p-12 flex flex-col items-center justify-center text-center relative overflow-hidden w-full max-w-2xl min-h-[400px]">
-               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full"></div>
-               <div className="mb-10 relative">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full"></div>
+              <div className="mb-10 relative">
                 <div className="w-24 h-24 rounded-full border-2 border-amber-400/30 flex items-center justify-center p-2">
                   <div className="w-full h-full rounded-full bg-gradient-to-b from-amber-400 to-amber-600 flex items-center justify-center shadow-amber-500/20 shadow-2xl">
                     <Play className="w-10 h-10 text-slate-900 fill-current" />
@@ -140,7 +456,7 @@ export const GameContainer: React.FC = () => {
 
         {gameState === 'playing' && currentQuestion && (
           <>
-            <motion.aside 
+            <motion.aside
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               className="w-full lg:w-72 flex flex-col gap-6"
@@ -183,14 +499,14 @@ export const GameContainer: React.FC = () => {
               </div>
             </motion.aside>
 
-            <motion.section 
+            <motion.section
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               className="flex-1 flex flex-col gap-6"
             >
               <div className="flex-1 bg-slate-900/60 border border-white/10 rounded-[32px] p-8 md:p-12 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[500px]">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full"></div>
-                
+
                 <div className="mb-10 relative">
                   <div className="w-32 h-32 rounded-full border-2 border-blue-500/30 flex items-center justify-center p-2">
                     <div className="w-full h-full rounded-full bg-gradient-to-b from-blue-500 to-indigo-700 flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.3)]">
@@ -235,7 +551,7 @@ export const GameContainer: React.FC = () => {
                 <div className="flex items-center gap-4">
                   <span className="text-[10px] text-slate-500 font-black uppercase tracking-widest">Protocol Active</span>
                 </div>
-                <button 
+                <button
                   onClick={() => setGameState('start')}
                   className="flex items-center gap-2 text-[10px] font-black text-slate-500 uppercase tracking-widest border border-white/5 px-4 py-2 rounded-lg hover:text-white hover:border-white/10 transition-all"
                 >
@@ -255,32 +571,32 @@ export const GameContainer: React.FC = () => {
           >
             <div className="bg-slate-900/80 border border-amber-400/20 rounded-[40px] p-10 md:p-16 w-full max-w-2xl text-center relative overflow-hidden shadow-2xl">
               <div className="absolute inset-0 bg-gradient-to-b from-amber-400/5 to-transparent"></div>
-              
+
               <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.5em] text-amber-500 mb-10 block">Identification Protocol Complete</span>
-              
+
               <div className="relative mb-12 mx-auto w-56 h-56 group">
                 <div className="absolute inset-0 bg-amber-400 blur-[40px] opacity-20 rounded-full group-hover:opacity-40 transition-opacity"></div>
-                <img 
-                  src={lastGuess.imageUrl} 
+                <img
+                  src={lastGuess.imageUrl}
                   alt={lastGuess.name}
                   className="relative z-10 w-full h-full rounded-full object-cover border-4 border-slate-900 p-1 bg-slate-800"
                   referrerPolicy="no-referrer"
                 />
                 <div className="absolute inset-0 rounded-full border-4 border-amber-400 animate-pulse opacity-40 scale-110" />
               </div>
-              
+
               <h2 className="relative z-10 text-5xl md:text-7xl font-black mb-4 tracking-tighter text-white">
                 {lastGuess.name}
               </h2>
-              
+
               <div className="relative z-10 bg-blue-600/20 text-blue-400 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest inline-block mb-8">
                 {lastGuess.confidence} Match
               </div>
-              
+
               <p className="relative z-10 text-xl font-bold mb-10 text-slate-300">
                 {lastGuess.reason || "My neural net is certain. Am I correct?"}
               </p>
-              
+
               <div className="relative z-10 flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
                 <button
                   onClick={() => handleGuessResult(true)}
@@ -307,8 +623,8 @@ export const GameContainer: React.FC = () => {
             className="flex-1 flex flex-col items-center justify-center"
           >
             <div className="glass-card p-16 max-w-xl w-full text-center relative overflow-hidden">
-               <div className={`absolute top-0 left-0 w-full h-1 ${isCorrect ? 'bg-green-500' : 'bg-red-500'}`}></div>
-               
+              <div className={`absolute top-0 left-0 w-full h-1 ${isCorrect ? 'bg-green-500' : 'bg-red-500'}`}></div>
+
               {isCorrect ? (
                 <>
                   <div className="mb-8 text-8xl">👑</div>
@@ -322,7 +638,7 @@ export const GameContainer: React.FC = () => {
                   <p className="text-slate-400 mb-12 text-lg">My neural weights require recalibration. You played exceptionally well.</p>
                 </>
               )}
-              
+
               <button
                 onClick={startGame}
                 className="w-full bg-blue-600 hover:bg-blue-500 text-white font-black py-5 px-10 rounded-2xl transition-all shadow-blue-500/20 shadow-2xl uppercase tracking-[0.2em] text-sm"
