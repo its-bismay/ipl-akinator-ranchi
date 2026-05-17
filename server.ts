@@ -2,8 +2,8 @@ import express from "express";
 import path from "path";
 import { GoogleGenAI } from "@google/genai";
 import dotenv from "dotenv";
-import { PLAYERS } from "./src/data/players";
-import { QUESTIONS } from "./src/data/questions";
+import { PLAYERS } from "./src/data/players.js";
+import { QUESTIONS } from "./src/data/questions.js";
 
 dotenv.config();
 
