@@ -42,7 +42,7 @@ ipl-genius/
 
 1. **Install dependencies:**
    ```bash
-   npm install
+   npm install ("to install npm packages")
    ```
 
 2. **Configure Environment Variables:**
