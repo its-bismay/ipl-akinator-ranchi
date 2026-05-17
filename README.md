@@ -2,19 +2,64 @@
 <img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
 </div>
 
-# Run and deploy your AI Studio app
+# IPL Akinator (Ranchi)
 
-This contains everything you need to run your app locally.
+A fun, AI-powered "Akinator" style game for guessing IPL players. 
 
-View your app in AI Studio: https://ai.studio/apps/bdc0fe9d-c33c-4730-af68-7cc0db6c0476
+## Project Structure
 
-## Run Locally
+This project is built using a modern React frontend (Vite) and a Node.js/Express backend (`server.ts`) for server-side logic and database interactions.
 
-**Prerequisites:**  Node.js
+```text
+ipl-genius/
+├── .env                        # Environment variables
+├── firebase-applet-config.json # Firebase Configuration
+├── firestore.rules             # Firestore Database Security Rules
+├── package.json                # Project Dependencies & Scripts
+├── server.ts                   # Backend Express Server Entry Point
+├── vite.config.ts              # Vite Frontend Build Config
+├── src/                        # Frontend React Application Source
+│   ├── App.tsx                 # Main App Component
+│   ├── main.tsx                # React Entry Point
+│   ├── index.css               # Global Styles
+│   ├── components/             # Reusable UI Components
+│   │   ├── game/               # Game-specific Components (Container, History, Leaderboard)
+│   │   └── layout/             # Layout Components (Navbar)
+│   ├── context/                # React Context (AuthContext)
+│   ├── data/                   # Static Data & Configurations
+│   │   ├── players.ts          # IPL Players Data
+│   │   └── questions.ts        # Akinator Questions
+│   └── lib/                    # Library code and Utilities
+│       ├── engine.ts           # Core Game Logic/Engine
+│       └── firebase.ts         # Firebase Initialization
+```
 
+## Setup and Installation
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+**Prerequisites:** 
+- Node.js
+- Firebase Project Setup (if using live DB)
+
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+2. **Configure Environment Variables:**
+   Update the `.env` file with your Gemini API key and Firebase configuration details (if applicable).
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ```
+
+3. **Run the Application locally:**
+   ```bash
+   npm run dev
+   ```
+   *This command spins up the local server (via `tsx server.ts`) which serves both the API endpoints and the frontend application.*
+
+## Technologies Used
+
+- **Frontend:** React, Vite, TypeScript, Tailwind CSS (or standard CSS)
+- **Backend:** Node.js, Express, TypeScript (`tsx`)
+- **Database / Auth:** Firebase Firestore, Firebase Authentication
+- **AI Integration:** Google Gemini API
