@@ -22,7 +22,7 @@ service cloud.firestore {
       allow create: if isOwner(userId);
       allow update: if isOwner(userId) && (
         // Only allow updating stats
-        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['gamesPlayed', 'gamesWon', 'accuracy', 'lastPlayed'])
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['gamesPlayed', 'gamesWon', 'correctGuesses', 'wrongGuesses', 'accuracy', 'lastPlayed', 'photoURL', 'username'])
       );
     }
 

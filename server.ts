@@ -22,7 +22,28 @@ const ai = new GoogleGenAI({
 
 app.use(express.json());
 
-// Advanced Guessing Engine Logic
+// Fix for Firebase Google Sign-In popup:
+// Firebase's signInWithPopup needs `Cross-Origin-Opener-Policy: same-origin-allow-popups`
+// so the auth popup can post its credential back via window.opener.
+// We intercept res.setHeader so no downstream middleware (Vite, etc.) can override it.
+app.use((_req, res, next) => {
+  const originalSetHeader = res.setHeader.bind(res) as typeof res.setHeader;
+  (res as any).setHeader = (name: string, value: any) => {
+    if (typeof name === 'string' && name.toLowerCase() === 'cross-origin-opener-policy') {
+      return originalSetHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+    }
+    if (typeof name === 'string' && name.toLowerCase() === 'cross-origin-embedder-policy') {
+      return originalSetHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+    }
+    return originalSetHeader(name as any, value);
+  };
+  // Also set them upfront for responses that don't go through setHeader again.
+  originalSetHeader('Cross-Origin-Opener-Policy', 'same-origin-allow-popups');
+  originalSetHeader('Cross-Origin-Embedder-Policy', 'unsafe-none');
+  next();
+});
+
+
 app.post("/api/game/next-step", async (req, res) => {
   const { history, askedQuestionIds } = req.body;
 

@@ -1,12 +1,12 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Play, RotateCcw, ThumbsUp, ThumbsDown, HelpCircle, User, Loader2, Brain } from 'lucide-react';
+import { Play, ThumbsUp, ThumbsDown, Brain, LogIn, Swords, Target, XCircle, Percent, ShieldCheck } from 'lucide-react';
+import type { User as FirebaseUser } from 'firebase/auth';
 import { UserAnswer } from '../../lib/engine';
-import { PlayerAttributes } from '../../data/players';
 import { useAuth } from '../../context/AuthContext';
+import type { UserData } from '../../context/AuthContext';
 import { db } from '../../lib/firebase';
-import { doc, setDoc, serverTimestamp, getDoc, updateDoc } from 'firebase/firestore';
-import History from './History';
+import { doc, setDoc, serverTimestamp, updateDoc, increment } from 'firebase/firestore';
 
 export const GameContainer: React.FC = () => {
   const [gameState, setGameState] = useState<'start' | 'playing' | 'guessing' | 'result'>('start');
@@ -19,6 +19,12 @@ export const GameContainer: React.FC = () => {
   const [remainingCount, setRemainingCount] = useState<number>(0);
   const [history, setHistory] = useState<Array<{ question: string, attribute: string, answer: UserAnswer }>>([]);
 
+<<<<<<< HEAD
+=======
+  const { user, userData, login, loginError, refreshUserData } = useAuth();
+  const [pendingStart, setPendingStart] = useState(false);
+   
+>>>>>>> 8eec832c3d15f6ecae1ffaf1a1693858e8e520e0
   const players = {
     "Virat Kohli":
       "https://documents.iplt20.com/ipl/IPLHeadshot2025/2.png",
@@ -324,12 +330,30 @@ export const GameContainer: React.FC = () => {
       "https://documents.iplt20.com/ipl/IPLHeadshot2025/75.png"
   };
 
+<<<<<<< HEAD
   function getPlayerImage(name: string
   ) {
     return players[name];
   }
 
   console.log(getPlayerImage("Virat Kohli"));
+=======
+  function getPlayerImage(name: string) {
+    return players[name];
+  }
+  // Auto-start the game once user logs in after clicking Launch Protocol
+  useEffect(() => {
+    if (pendingStart && user) {
+      setPendingStart(false);
+      setHistory([]);
+      setQuestionCount(0);
+      setLastGuess(null);
+      setIsLastGuessCorrect(null);
+      fetchNextStep([]);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, pendingStart]);
+>>>>>>> 8eec832c3d15f6ecae1ffaf1a1693858e8e520e0
 
   const fetchNextStep = async (newHistory: Array<{ question: string, attribute: string, answer: UserAnswer }>) => {
     try {
@@ -360,27 +384,41 @@ export const GameContainer: React.FC = () => {
         setRemainingCount(data.remaining_players_count);
         setGameState('playing');
       } else if (data.type === 'guess') {
+<<<<<<< HEAD
 
         const playerName = data.guess;
         const imageUrl = getPlayerImage(playerName);
 
+=======
+        const playerName = data.guess;
+        const imageUrl = getPlayerImage(playerName);
+>>>>>>> 8eec832c3d15f6ecae1ffaf1a1693858e8e520e0
         setLastGuess({
-          name: data.guess,
+          name: playerName,
           confidence: data.confidence,
           reason: data.reason,
+<<<<<<< HEAD
           imageUrl: imageUrl || "https://ui-avatars.com/api/?name=" + data.guess,
+=======
+          imageUrl: imageUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(playerName)}&background=random&color=fff&size=256`,
+>>>>>>> 8eec832c3d15f6ecae1ffaf1a1693858e8e520e0
           franchises: [] // We could fetch this or just omit
         });
         setGameState('guessing');
       }
     } catch (err) {
       console.error('Server error:', err);
-    } finally {
+    } finally { 
       setIsThinking(false);
     }
   };
 
   const startGame = () => {
+    if (!user) {
+      setPendingStart(true); // will auto-start once login completes
+      login();
+      return;
+    }
     setHistory([]);
     setQuestionCount(0);
     setLastGuess(null);
@@ -396,7 +434,7 @@ export const GameContainer: React.FC = () => {
     fetchNextStep(newHistory);
   };
 
-  const { user } = useAuth();
+
 
   const handleGuessResult = async (correct: boolean) => {
     setIsLastGuessCorrect(correct);
@@ -404,6 +442,7 @@ export const GameContainer: React.FC = () => {
 
     if (user && lastGuess) {
       try {
+        // Save session
         const sessionId = Date.now().toString();
         const sessionRef = doc(db, 'sessions', sessionId);
         await setDoc(sessionRef, {
@@ -411,8 +450,23 @@ export const GameContainer: React.FC = () => {
           userId: user.uid,
           guess: lastGuess.name,
           won: correct,
+          questionCount,
           createdAt: serverTimestamp(),
         });
+
+        // Update user stats
+        const userRef = doc(db, 'users', user.uid);
+        const newGamesPlayed = (userData?.gamesPlayed ?? 0) + 1;
+        const newCorrect = (userData?.correctGuesses ?? 0) + (correct ? 1 : 0);
+        const newAccuracy = Math.round((newCorrect / newGamesPlayed) * 100);
+        await updateDoc(userRef, {
+          gamesPlayed: increment(1),
+          correctGuesses: correct ? increment(1) : increment(0),
+          wrongGuesses: !correct ? increment(1) : increment(0),
+          accuracy: newAccuracy,
+          lastPlayed: serverTimestamp(),
+        });
+        await refreshUserData();
       } catch (err) {
         console.error('Error saving session:', err);
       }
@@ -428,9 +482,14 @@ export const GameContainer: React.FC = () => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 1.1 }}
-            className="flex-1 flex flex-col items-center justify-center"
+            className="flex-1 flex flex-col lg:flex-row gap-8 items-stretch"
           >
+<<<<<<< HEAD
             <div className="bg-slate-900/60 border border-white/10 rounded-[32px] p-12 flex flex-col items-center justify-center text-center relative overflow-hidden w-full max-w-2xl min-h-[400px]">
+=======
+            {/* Launch Card */}
+            <div className="flex-1 bg-slate-900/60 border border-white/10 rounded-[32px] p-12 flex flex-col items-center justify-center text-center relative overflow-hidden min-h-[400px]">
+>>>>>>> 8eec832c3d15f6ecae1ffaf1a1693858e8e520e0
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 blur-[100px] rounded-full"></div>
               <div className="mb-10 relative">
                 <div className="w-24 h-24 rounded-full border-2 border-amber-400/30 flex items-center justify-center p-2">
@@ -451,6 +510,11 @@ export const GameContainer: React.FC = () => {
                 <div className="absolute inset-0 rounded-2xl border border-white group-hover:scale-110 transition-transform opacity-30" />
               </button>
             </div>
+
+            {/* User Dashboard — only shown when logged in */}
+            {user && userData && (
+              <UserDashboard user={user} userData={userData} />
+            )}
           </motion.div>
         )}
 
@@ -509,7 +573,7 @@ export const GameContainer: React.FC = () => {
 
                 <div className="mb-10 relative">
                   <div className="w-32 h-32 rounded-full border-2 border-blue-500/30 flex items-center justify-center p-2">
-                    <div className="w-full h-full rounded-full bg-gradient-to-b from-blue-500 to-indigo-700 flex items-center justify-center shadow-[0_0_30px_rgba(59,130,246,0.3)]">
+                    <div className="w-full h-full rounded-full bg-gradient-to-b from-blue-500 to-indigo-700 flex items-center justify-center shadow-[0_0_30px_rgb(59_130_246_/_0.3)]">
                       <div className={`transition-all ${isThinking ? 'animate-spin' : 'animate-pulse'}`}>
                         <Brain className="w-16 h-16 text-white" />
                       </div>
@@ -662,4 +726,146 @@ const AnswerButton: React.FC<{ label: string; onClick: () => void, color: string
   </button>
 );
 
+// --- User Dashboard ---
+
+const StatCard: React.FC<{ icon: React.ReactNode; label: string; value: string | number; accent: string }> = ({ icon, label, value, accent }) => (
+  <div className={`flex items-center gap-3 p-3 rounded-xl bg-slate-800/60 border ${accent} group hover:bg-slate-800 transition-all`}>
+    <div className="p-2 rounded-lg bg-slate-700/50 text-slate-300 group-hover:scale-110 transition-transform">
+      {icon}
+    </div>
+    <div className="min-w-0">
+      <p className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 mb-0.5">{label}</p>
+      <p className="text-lg font-black text-white tabular-nums leading-none">{value}</p>
+    </div>
+  </div>
+);
+
+const UserDashboard: React.FC<{ user: FirebaseUser; userData: UserData }> = ({ user, userData }) => {
+  const winRate = userData.gamesPlayed > 0
+    ? Math.round((userData.correctGuesses / userData.gamesPlayed) * 100)
+    : 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.15 }}
+      className="w-full lg:w-80 flex flex-col gap-5"
+    >
+      <div className="bg-slate-900/70 border border-white/10 rounded-3xl p-6 relative overflow-hidden">
+        <div className="absolute -top-12 -right-12 w-48 h-48 bg-amber-400/10 blur-[60px] rounded-full pointer-events-none" />
+        <div className="absolute -bottom-8 -left-8 w-40 h-40 bg-blue-600/10 blur-[60px] rounded-full pointer-events-none" />
+        <div className="relative z-10">
+          <p className="text-[9px] font-black uppercase tracking-[0.3em] text-amber-500 mb-4 flex items-center gap-1.5">
+            <ShieldCheck className="w-3 h-3" /> Verified Player
+          </p>
+          <div className="flex items-center gap-4 mb-5">
+            <div className="relative flex-shrink-0">
+              <img
+                src={user.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || 'U')}&background=1e40af&color=fff&size=128`}
+                alt={user.displayName || 'User'}
+                referrerPolicy="no-referrer"
+                className="w-16 h-16 rounded-2xl border-2 border-amber-400/30 shadow-lg object-cover"
+              />
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-slate-900" />
+            </div>
+            <div className="min-w-0">
+              <h3 className="text-base font-black text-white truncate leading-tight">
+                {user.displayName || 'Anonymous'}
+              </h3>
+              <p className="text-[11px] text-slate-400 truncate">
+                @{userData.username || user.displayName?.toLowerCase().replace(/\s/g, '') || 'player'}
+              </p>
+              <p className="text-[10px] text-slate-500 truncate mt-0.5">{user.email}</p>
+            </div>
+          </div>
+          <div className="mb-1 flex justify-between items-center">
+            <span className="text-[9px] font-bold uppercase tracking-widest text-slate-500">AI Win Rate</span>
+            <span className="text-[11px] font-black text-amber-400">{winRate}%</span>
+          </div>
+          <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: `${winRate}%` }}
+              transition={{ duration: 1, delay: 0.4, ease: 'easeOut' }}
+              className="h-full bg-gradient-to-r from-amber-500 to-amber-300 rounded-full"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        <StatCard icon={<Swords className="w-4 h-4" />} label="Matches" value={userData.gamesPlayed} accent="border-white/5" />
+        <StatCard icon={<Target className="w-4 h-4 text-green-400" />} label="AI Correct" value={userData.correctGuesses} accent="border-green-500/20" />
+        <StatCard icon={<XCircle className="w-4 h-4 text-red-400" />} label="You Won" value={userData.wrongGuesses ?? 0} accent="border-red-500/20" />
+        <StatCard icon={<Percent className="w-4 h-4 text-blue-400" />} label="Accuracy" value={`${winRate}%`} accent="border-blue-500/20" />
+      </div>
+    </motion.div>
+  );
+};
+
+// --- Sign In Prompt ---
+const SignInPrompt: React.FC<{ onLogin: () => void; error: string | null }> = ({ onLogin, error }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  const handleClick = async () => {
+    setIsLoading(true);
+    await onLogin();
+    // Reset loading if the popup was closed without completing (error or cancel)
+    setIsLoading(false);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay: 0.15 }}
+      className="w-full lg:w-80 bg-slate-900/60 border border-white/10 rounded-3xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden"
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-amber-400/5 pointer-events-none" />
+      <div className="relative z-10 flex flex-col items-center gap-6">
+        <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-600/20 to-amber-400/20 border border-white/10 flex items-center justify-center shadow-xl">
+          <LogIn className="w-9 h-9 text-amber-400" />
+        </div>
+        <div>
+          <h3 className="text-xl font-black text-white mb-2 tracking-tight">Track Your Battles</h3>
+          <p className="text-slate-400 text-sm leading-relaxed max-w-[220px] mx-auto">
+            Sign in with Google to unlock your personal dashboard, stats &amp; battle history.
+          </p>
+        </div>
+
+        {/* Error message */}
+        {error && (
+          <div className="w-full bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 text-red-400 text-xs leading-relaxed text-left">
+            ⚠️ {error}
+          </div>
+        )}
+
+        <button
+          id="google-sign-in-btn"
+          onClick={handleClick}
+          disabled={isLoading}
+          className="flex items-center gap-3 bg-white text-slate-900 font-black text-sm uppercase tracking-widest px-6 py-3.5 rounded-xl hover:bg-slate-100 active:scale-95 transition-all shadow-xl w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {isLoading ? (
+            <svg className="w-5 h-5 animate-spin text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05" />
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+            </svg>
+          )}
+          {isLoading ? 'Opening Google...' : 'Sign in with Google'}
+        </button>
+        <p className="text-[10px] text-slate-600 uppercase tracking-widest font-bold">Free · No password needed</p>
+      </div>
+    </motion.div>
+  );
+};
+
 export default GameContainer;
+

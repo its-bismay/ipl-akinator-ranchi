@@ -33,7 +33,7 @@ export default function App() {
               className="h-full flex flex-col"
             >
               <section className="text-center mb-10 max-w-2xl mx-auto">
-                <motion.span 
+                <motion.span
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.2 }}
